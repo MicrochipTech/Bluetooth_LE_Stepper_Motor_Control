@@ -1,0 +1,66 @@
+/*
+ * MPPB bipolar stepper control for pic32wm_bz6204_curiosity.
+ *
+ * A/B are winding one; C/D are winding two. Pins 19-22 require extra jumpers.
+ */
+
+/ {
+	leds {
+		compatible = "gpio-leds";
+		led3: led_3 {
+			gpios = <&portb 7 GPIO_ACTIVE_LOW>;
+			label = "User LED 1";
+		};
+	};
+
+	stepper_outputs {
+		compatible = "gpio-leds";
+		status = "okay";
+
+		stepper_a_high: stepper_a_high {
+			gpios = <&porta 7 GPIO_ACTIVE_HIGH>;
+		};
+		stepper_a_low: stepper_a_low {
+			gpios = <&porta 3 GPIO_ACTIVE_HIGH>;
+		};
+		stepper_b_high: stepper_b_high {
+			gpios = <&porta 1 GPIO_ACTIVE_HIGH>;
+		};
+		stepper_b_low: stepper_b_low {
+			gpios = <&porta 0 GPIO_ACTIVE_HIGH>;
+		};
+		stepper_c_high: stepper_c_high {
+			gpios = <&portb 10 GPIO_ACTIVE_HIGH>;
+		};
+		stepper_c_low: stepper_c_low {
+			gpios = <&portb 12 GPIO_ACTIVE_HIGH>;
+		};
+		stepper_d_high: stepper_d_high {
+			gpios = <&portb 11 GPIO_ACTIVE_HIGH>;
+		};
+		stepper_d_low: stepper_d_low {
+			gpios = <&portb 13 GPIO_ACTIVE_HIGH>;
+		};
+	};
+
+	aliases {
+		led3 = &led3;
+		stepper-a-high = &stepper_a_high;
+		stepper-a-low = &stepper_a_low;
+		stepper-b-high = &stepper_b_high;
+		stepper-b-low = &stepper_b_low;
+		stepper-c-high = &stepper_c_high;
+		stepper-c-low = &stepper_c_low;
+		stepper-d-high = &stepper_d_high;
+		stepper-d-low = &stepper_d_low;
+	};
+};
+
+&sercom5 {
+	status = "disabled";
+};
+
+
+
+
+

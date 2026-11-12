@@ -1,0 +1,9 @@
+sample:
+  name: BLE 42HS03 Stepper Motor with MPPB
+  description: Control a 42HS03 stepper from PIC32WM BZ6204 through the Microchip Multi-Phase Power Board.
+  tags: bluetooth pwm gpio motor
+tests:
+  build:
+    platform_allow:
+      - pic32wm_bz6204_curiosity/pic32cx2051bz62132
+    tags: bluetooth pwm gpio motor

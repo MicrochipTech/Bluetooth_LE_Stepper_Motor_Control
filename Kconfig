@@ -1,0 +1,49 @@
+# Copyright (c) 2025 Microchip Technology Inc.
+# SPDX-License-Identifier: Apache-2.0
+
+mainmenu "Bluetooth: BLE Stepper Motor MPPB"
+
+config TRS_SERVER_CREDIT
+    int "Trs server credits"
+    range 6 16
+    default 16
+    help
+      credit value for Transparent Server
+
+config TRS_SERVER_BUF_POOL_SIZE
+    int "Trs server buffer pool size"
+    range 1 16
+    default 4
+    help
+      set this value based on the credits,maximum connections, 
+      max size of the data that will be send over trs server 
+      and frequency of data flow
+
+config TRS_SERVER_BUF_DATA_SIZE
+    int "Trs server data size for one pool"
+    range 20 244
+    default 128
+    help
+      set this value based on the max size of the data 
+      that will be send over trs server
+
+config TRS_SERVER_OPCODE_CBFC_ENABLED
+    hex "Trs server opcode for CBFC enabled"
+    default 0x14
+    help
+      opcode for CBFC enabled
+
+config TRS_SERVER_OPCODE_CBFC_GIVE_CREDIT
+    hex "Trs server opcode for giving credit"
+    default 0x15
+    help
+      opcode for giving credit
+
+config TRS_SERVER_VENDOR_OPCODE_MIN
+    hex "Trs server vendor opcode min"
+    range 0x20 0xFF
+    default 0x20
+    help
+      minimum value for vendor specific opcodes
+
+source "Kconfig.zephyr"
