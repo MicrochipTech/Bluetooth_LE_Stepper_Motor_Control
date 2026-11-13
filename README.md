@@ -140,6 +140,21 @@ C/D signals need extra jumper wires on the existing adapter harness.
 
 #### Eight-lead motor connections
 
+The documented setup uses the 42HS03 in **bipolar-series** winding
+configuration. See **Figure 3(b), page 2** of the
+[42HS03 motor datasheet](https://ww1.microchip.com/downloads/aemDocuments/documents/OTH/ProductDocuments/UserGuides/Leedshine42HS03StepperMotorDatasheet.pdf)
+for the wiring image. For the lead colors shown in that diagram:
+
+| Motor winding | Join and insulate | Outer leads to MPPB outputs |
+| :-- | :-- | :-- |
+| 1 (datasheet A+ / A−) | Green + yellow | Black to A; orange to B |
+| 2 (datasheet B+ / B−) | Blue + white | Red to C; brown to D |
+
+These are datasheet colors and an example output assignment; verify the lead
+diagram and coil pairs for the actual motor before wiring. Bipolar series
+describes the winding connections; the firmware separately supports full-step
+(FS) and half-step (HS) operation, selected with User Button 2 (SW800).
+
 1. Identify **four independent half-coil pairs** with a multimeter. Each
    half-coil is nominally 4.6 ohms; unrelated pairs should be open.
 2. Pair the correct two half-coils for each phase according to the motor's
