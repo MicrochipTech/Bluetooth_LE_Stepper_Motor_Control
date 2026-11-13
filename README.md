@@ -4,7 +4,7 @@
 
 <p><strong>Wireless step and direction control. Powered by Zephyr®.</strong></p>
 
-<p>Wireless MCU &nbsp; | &nbsp; Bluetooth LE &nbsp; | &nbsp; Full / half stepping &nbsp; | &nbsp; MPPB</p>
+<p>Wireless MCU &nbsp; | &nbsp; Bluetooth LE &nbsp; | &nbsp; Full / half stepping</p>
 
 <p><a href="#31-prerequisites">Set up Zephyr</a> · <a href="#32-import-the-application">Import</a> · <a href="#34-build-the-application">Build</a> · <a href="#35-program-the-board">Flash</a> · <a href="#5-demo-setup-and-operation">Run with MBD</a></p>
 
@@ -61,12 +61,18 @@ regulation**. Do not copy the brushed-DC example's 24 V supply setup.
 | Item | Quantity | Notes |
 | :-- | :--: | :-- |
 | [PIC32-BZ6 Curiosity board](https://www.microchip.com/en-us/development-tool/ev31u42a) | 1 | Only supported board: `pic32wm_bz6204_curiosity` |
-| Microchip MPPB (EV35Z86A) | 1 | Four half-bridges; A/B drive winding 1, C/D drive winding 2 |
-| Leadshine 42HS03 eight-lead stepper | 1 | Identify and connect the half-coils in bipolar series |
-| Regulated 6 V external supply | 1 | Series-wound, low-speed bench setup only; approximately 1.5 A supply current limit |
-| Series resistors, at least 1 ohm / 2 W each | 2 | One resistor in series with each complete motor winding |
-| Jumper wires and USB/debug connection | As needed | C/D bridge controls require four additional jumpers |
-| Multimeter / current measurement equipment | As needed | Verify independent coil pairs, series resistance and winding current |
+| [Microchip MPPB (EV35Z86A)](https://www.microchip.com/en-us/development-tool/ev35z86a) | 1 | Four half-bridges; A/B drive winding 1, C/D drive winding 2 |
+| [Leadshine 42HS03 eight-lead stepper (AC300024)](https://www.microchip.com/en-us/development-tool/ac300024) | 1 | Identify and connect the half-coils in bipolar series |
+| External 5 V / 3 A power supply | 1 | Used in the author's setup; see the supply-rating note below |
+| Series resistors, at least 1 ohm / 2 W each | 2 | Passive winding-current limiting for the recommended 6 V setup; one per complete winding |
+
+> **Supply-rating note:** The author uses a 5 V / 3 A supply. However, the
+> MPPB's specified input range is 6–50 V; 5 V is below its specified minimum
+> and is not a guaranteed operating configuration. For the recommended
+> series-wound, low-speed bench setup, use a regulated 6 V external supply
+> with an adjustable current limit set to approximately 1.5 A, together with
+> the per-winding resistors described below. A 3 A supply rating is its
+> available output capacity, not a motor-winding current limit.
 
 #### Motor and supply ratings
 
@@ -86,6 +92,12 @@ Winding current <= 6 V / (2 × 4.6 ohms × 0.9 + 1 ohm) = 0.647 A
 Verify the actual winding resistance and current. Set the supply current limit
 to approximately 1.5 A and check for heating before sustained operation.
 The resistors limit current passively; the firmware does not regulate it.
+They also reduce winding heating by reducing current, but should not be
+treated as an optional fix only after the motor becomes hot. Select current
+limiting before operation based on the actual supply voltage, winding
+resistance and motor current rating. If the motor heats excessively, stop
+and check winding current and wiring before continuing; increasing resistance
+reduces current and torque, and requires checking the resistor power rating.
 
 > ⚠️ **Power and wiring safety**
 >
@@ -101,6 +113,8 @@ The resistors limit current passively; the firmware does not regulate it.
 Connect and inspect all wiring with power removed. The following table applies
 only to Curiosity; these are GPIO outputs, including pins that have alternate
 timer/PWM functions.
+
+<p align="center"><img src="docs/stepper-hardware.jpg" alt="PIC32-BZ6 Curiosity board connected to the Multi-Phase Power Board and stepper motor" width="100%"></p>
 
 | Function | PIC32-BZ6 Curiosity pin | MPPB control-header pin | Purpose |
 | :-- | :-- | :--: | :-- |
@@ -473,6 +487,10 @@ states because no current regulation compensates the difference.
 
 ## 5. Demo Setup and Operation
 
+The demo below shows the stepper motor controlled wirelessly using the MBD app.
+
+https://github.com/user-attachments/assets/5ca55c5c-2360-4257-b4d1-08a88230e638
+
 | Step | Action | Expected behavior |
 | :--: | :-- | :-- |
 | 1 | With power removed, verify coil pairs, series junctions, resistors and all eight control wires | Two independent series windings and correct A/B/C/D connections |
@@ -528,6 +546,3 @@ safe mechanical operation. Validate those on the actual hardware.
 | Motor continues after disconnect | Expected open-loop behavior; disconnect is not a hardware stop |
 | No holding torque after STOP | Expected: all bridges off |
 | OpenOCD cannot find CMSIS-DAP | Check probe mode, USB, drivers and probe ownership; flashing did not complete |
-
-Hardware images and demo video can be added later; no placeholder assets or
-unverified demonstration links are included.
